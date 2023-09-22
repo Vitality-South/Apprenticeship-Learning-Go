@@ -87,22 +87,27 @@ func main() {
 	goodbye()
 }
 
+// goodbye prints the AI's goodbye message.
 func goodbye() {
 	fmt.Printf("\n\nAnalyzing game...\n")
 
 	delay := 7
 
 	chars := [4]byte{'|', '/', '-', '\\'}
+
 	for i := 4; i <= delay+4; i++ {
-		for j := 0; j < 80; j++ {
+		for j := 0; j < 75; j++ {
 			fmt.Print("\b")
 		}
+
 		for j := 0; j < 80; j++ {
 			fmt.Print(rand.Intn(2))
 		}
+
 		for j := 0; j < 1; j++ {
 			fmt.Print(string(chars[i%4]))
 		}
+
 		time.Sleep(1 * time.Second)
 	}
 
