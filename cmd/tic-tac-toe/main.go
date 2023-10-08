@@ -51,26 +51,10 @@ func main() {
 		for !board.IsGameOver() {
 			// let each player take a turn
 			for _, player := range players {
-				if player == HumanPlayer {
-					// keep asking for a move until a valid one is given
-					for {
-						var x, y int
-
-						fmt.Printf("\nYour move (x y): ")
-						fmt.Scanf("%d %d", &x, &y)
-
-						if !board.SpotIsAllowed(x, y) {
-							fmt.Println("That spot is not allowed. Try again.")
-							continue
-						}
-
-						board.Play(x, y)
-
-						break
-					}
-				}
-
-				if player == AIPlayer {
+				switch player {
+				case HumanPlayer:
+					letHumanPlay(board)
+				case AIPlayer:
 					fmt.Printf("\nAI's turn.\n")
 					board.PlayAI()
 				}
@@ -85,6 +69,26 @@ func main() {
 	}
 
 	goodbye()
+}
+
+// letHumanPlay asks the human player for a move and plays it.
+func letHumanPlay(board *Board) {
+	// keep asking for a move until a valid one is given
+	for {
+		var x, y int
+
+		fmt.Printf("\nYour move (y x): ")
+		fmt.Scanf("%d %d", &x, &y)
+
+		if !board.SpotIsAllowed(x, y) {
+			fmt.Println("That spot is not allowed. Try again.")
+			continue
+		}
+
+		board.Play(x, y)
+
+		break
+	}
 }
 
 // goodbye prints the AI's goodbye message.

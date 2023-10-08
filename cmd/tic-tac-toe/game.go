@@ -215,6 +215,12 @@ func (b *Board) isBoardFull(board GameBoard) bool {
 
 // SpotIsAllowed returns true if the spot is empty and a player can play that spot.
 func (b *Board) SpotIsAllowed(x, y int) bool {
+	// spots outside of our game board are not allowed
+	if x < 0 || x >= BoardSize || y < 0 || y >= BoardSize {
+		return false
+	}
+
+	// spots that are already played are not allowed
 	return b.spaces[x][y] == EmptySpot
 }
 
