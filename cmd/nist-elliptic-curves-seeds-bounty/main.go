@@ -21,7 +21,6 @@ import (
 const MULTI_HASH_ITERATIONS = 1000
 
 type Transform func(string) string
-type Stage [][]Transform
 
 func transform(s string, t []Transform) []string {
 	slice := make([]string, len(t))
@@ -144,6 +143,8 @@ func _main() int {
 		strings.ToUpper,
 	}
 
+	var guessCount uint64
+
 	for _, g := range guesses {
 		varies := transform(g, variations)
 
@@ -154,6 +155,8 @@ func _main() int {
 				iters := transform(vv, iterations)
 
 				for _, i := range iters {
+					guessCount++
+
 					// hash our guess
 					hashBytes := sha1.Sum([]byte(i))
 
@@ -164,6 +167,8 @@ func _main() int {
 					// try multi-hashing the bytes representation of our guess
 					multi := hashBytes
 					for j := 0; j < MULTI_HASH_ITERATIONS; j++ {
+						guessCount++
+
 						multi = sha1.Sum(multi[:])
 
 						if found(hashesToCrack, multi) {
@@ -175,6 +180,8 @@ func _main() int {
 					for _, f := range multiHashText {
 						textHash := f(hex(hashBytes))
 						for j := 0; j < MULTI_HASH_ITERATIONS; j++ {
+							guessCount++
+
 							b := sha1.Sum([]byte(textHash))
 							textHash = f(hex(b))
 
@@ -187,6 +194,8 @@ func _main() int {
 			}
 		}
 	}
+
+	fmt.Println("Guesses:", guessCount)
 
 	return exit.OK
 }

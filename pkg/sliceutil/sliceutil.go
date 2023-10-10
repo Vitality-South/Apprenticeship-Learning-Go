@@ -1,5 +1,9 @@
 package sliceutil
 
+import (
+	"math/rand"
+)
+
 // Filter returns a new slice containing only elements where the function "f" returns true
 func Filter[T any](slice []T, f func(T) bool) []T {
 	var n []T
@@ -57,4 +61,11 @@ func PointerSlice[T any](slice []T) []*T {
 	}
 
 	return v
+}
+
+// Shuffle randomizes the order of the elements in the slice.
+func Shuffle[T any](slice []T) {
+	rand.Shuffle(len(slice), func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
+	})
 }
